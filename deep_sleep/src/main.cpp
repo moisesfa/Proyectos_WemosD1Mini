@@ -1,6 +1,6 @@
 /***
  * Ejemplo básico de Deep Sleep - Sueño profundo con un WeMos D1 Mini
- * Parpadea el led se a dormir durante 10 segundos
+ * Parpadea el led y se va a dormir durante 10 segundos
  * Es necesario unir los pines D0 y RST para que se repita el proceso
  * Para reprogramar el ESP, desconecte la unión D0 - RST 
  * 

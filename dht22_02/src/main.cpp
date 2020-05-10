@@ -17,8 +17,8 @@
 // Inicializa el sensor DHT 
 DHT dht(DHTPIN, DHTTYPE);
 
-int dht22_tm = 4000;    // tiempo entre medidas 4 segundos
-long dht22_lasttime;    //last time messages' scan has been done
+int dht22_tm = 4000;             // tiempo entre medidas 4 segundos
+unsigned long dht22_lasttime;    // última actualización de tiempo
 
 void setup() {
   Serial.begin(115200); 

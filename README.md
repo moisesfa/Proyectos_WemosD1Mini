@@ -10,4 +10,5 @@ Ejemplo básico para leer la Shield DHT22 Sensor de temperatura y humedad
 ## dht22_02
 Ejemplo básico para leer la Shield DHT22 Sensor de temperatura y humedad, usando la función millis() en lugar de delay()
 
-## 
+## dht22_03
+Ejemplo básico para leer la Shield DHT22 Sensor de temperatura y humedad, después de la lectura entramos en Deep Sleep para ahorro energético
