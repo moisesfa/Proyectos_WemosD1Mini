@@ -1,5 +1,5 @@
 /**
- * Ejemplo básico de control del led integrado en la WeMos D1 Mini 
+ * Ejemplo básico de lectura de un sensor DHT22 en la WeMos D1 Mini 
  * desde un bot de telegram.
  * */
 
@@ -24,6 +24,12 @@
 
 //------- Replace the following! ------
 
+#include <Adafruit_Sensor.h>
+#include "DHT.h"
+
+#define DHTPIN D4       // PIN del sensor dht22 
+#define DHTTYPE DHT22   // DHT 22  (AM2302)
+
 char ssid[] = "nombre de la red";         		  // el nombre de su red SSID
 char password[] = "contraseña de la red";       // la contraseña de su red
 
@@ -34,11 +40,19 @@ char password[] = "contraseña de la red";       // la contraseña de su red
 WiFiClientSecure client;
 UniversalTelegramBot bot(TELEGRAM_BOT_TOKEN, client);
 
+// Inicializa el sensor DHT
+DHT dht(DHTPIN, DHTTYPE);
+
 int Bot_mtbs = 1000; // tiempo medio entre escaneo de mensajes
 long Bot_lasttime;   // la última vez que se realizó la exploración de mensajes
 bool Start = false;
-// Estado del led
-int ledStatus = 0;
+
+int dht22_mtbs = 4000; 
+long dht22_lasttime;  
+float hum;
+float tem;
+String str_tem = "";
+String str_hum = "";
 
 void handleNewMessages(int numNewMessages) {
   Serial.println("handleNewMessages");
@@ -51,32 +65,20 @@ void handleNewMessages(int numNewMessages) {
     String from_name = bot.messages[i].from_name;
     if (from_name == "") from_name = "Guest";
 
-    if (text == "/ledon") {
-      digitalWrite(LED_BUILTIN, LOW);   // LED ON
-      ledStatus = 1;
-      bot.sendMessage(chat_id, "Led is ON", "");
+    if (text == "/temperatura") {
+      bot.sendMessage(chat_id, str_tem , "");
     }
 
-    if (text == "/ledoff") {
-      ledStatus = 0;
-      digitalWrite(LED_BUILTIN, HIGH);    // LED OFF
-      bot.sendMessage(chat_id, "Led is OFF", "");
+    if (text == "/humedad") {
+      bot.sendMessage(chat_id, str_hum , "");
     }
-
-    if (text == "/status") {
-      if(ledStatus){
-        bot.sendMessage(chat_id, "Led is ON", "");
-      } else {
-        bot.sendMessage(chat_id, "Led is OFF", "");
-      }
-    }
-
+    
     if (text == "/start") {
       String welcome = "Welcome to Universal Arduino Telegram Bot library, " + from_name + ".\n";
-      welcome += "This is Flash Led Bot example.\n\n";
-      welcome += "/ledon : to switch the Led ON\n";
-      welcome += "/ledoff : to switch the Led OFF\n";
-      welcome += "/status : Returns current status of LED\n";
+      welcome += "Bot example.\n\n";
+      welcome += "/temperatura : solicito la temperatura\n";
+      welcome += "/humedad : solicito la humedad\n";
+      //welcome += "/status : Returns current status of LED\n";
       bot.sendMessage(chat_id, welcome, "Markdown");
     }
   }
@@ -86,6 +88,9 @@ void handleNewMessages(int numNewMessages) {
 void setup() {
   Serial.begin(115200);
 
+  dht.begin();
+  Serial.println("DHTxx Begin()");
+  
   // Establezca WiFi en modo estación y desconéctese de un AP si era anteriormente estaba conectado
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
@@ -106,15 +111,13 @@ void setup() {
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
-  pinMode(LED_BUILTIN, OUTPUT);
-  delay(10);
-  digitalWrite(LED_BUILTIN, HIGH); // el led OFF al inicio
-
   client.setInsecure();
 
 }
 
 void loop() {
+  
+  // Control de tiempos del bot
   if (millis() > Bot_lasttime + Bot_mtbs)  {
     int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
 
@@ -126,4 +129,23 @@ void loop() {
 
     Bot_lasttime = millis();
   }
+
+  // Control de tiempos del sensor
+  if (millis() > dht22_lasttime + dht22_mtbs)  {
+    hum = dht.readHumidity();
+    tem = dht.readTemperature();
+    if (isnan(hum) || isnan(tem)) {
+        Serial.println("¡Error al leer del sensor DHT!");
+        return;
+    }
+    // Creo el string 
+    str_tem = "Temperatura : " + String(tem, 2);
+    Serial.println(str_tem);
+    str_hum = "Humedad : " + String(hum, 2);
+    Serial.println(str_hum);
+  
+    dht22_lasttime = millis();
+  }
+
+  
 }

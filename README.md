@@ -16,3 +16,5 @@ Ejemplo básico para leer la Shield DHT22 Sensor de temperatura y humedad, despu
 ## [telegram_01](https://github.com/moisesfa/Proyectos_WemosD1Mini/blob/master/telegram_01/src/main.cpp)
 Ejemplo básico de control del led integrado en la WeMos D1 Mini desde un bot de telegram.
 
+## [telegram_02](https://github.com/moisesfa/Proyectos_WemosD1Mini/blob/master/telegram_02/src/main.cpp)
+Ejemplo básico de lectura del sensor DHT22 en la WeMos D1 Mini desde un bot de telegram.
