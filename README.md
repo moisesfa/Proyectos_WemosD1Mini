@@ -18,3 +18,6 @@ Ejemplo básico de control del led integrado en la WeMos D1 Mini desde un bot de
 
 ## [telegram_02](https://github.com/moisesfa/Proyectos_WemosD1Mini/blob/master/telegram_02/src/main.cpp)
 Ejemplo básico de lectura del sensor DHT22 en la WeMos D1 Mini desde un bot de telegram.
+
+## [telegram_03](https://github.com/moisesfa/Proyectos_WemosD1Mini/blob/master/telegram_03/src/main.cpp)
+Ejemplo de lectura del sensor DHT22 en la WeMos D1 Mini desde un bot de telegram. Almacena valores mínimos y máximos. Se pueden programar alarmas para avisos de temperatura y humedad alcanzados. 
