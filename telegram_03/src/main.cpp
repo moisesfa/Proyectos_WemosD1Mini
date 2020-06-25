@@ -166,10 +166,10 @@ void handleNewMessages(int numNewMessages) {
           HumL = text.substring(8).toFloat();
           if (HumL > hum[1]) {
             HumDL = 2;
-            msg = "Te notificaré una vez que la temperatura aumente a:\n";
+            msg = "Te notificaré una vez que la humedad aumente a:\n";
           } else {
             HumDL = 1;
-            msg = "Te notificaré una vez que la temperatura baje a:\n";
+            msg = "Te notificaré una vez que la humedad baje a:\n";
           }
           msg += String(HumL) + " °C";
           bot.sendMessage(chat_id, msg, "");
